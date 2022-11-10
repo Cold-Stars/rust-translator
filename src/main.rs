@@ -382,6 +382,7 @@ fn main() {
     if cfg!(target_os = "linux") {
         #[cfg(target_os = "linux")]
         println!("{}", "Working...".bold().yellow());
+        let mut last_selected_text = String::from("");
         #[cfg(target_os = "linux")]
         loop {
             thread::sleep(sleep_time);
@@ -389,12 +390,16 @@ fn main() {
                 Some(t) => t,
                 _ => continue,
             };
-            if selected_text.trim().len() > 0 {
-                // println!("{}", &selected_text);
-                // let test_string = String::from("translate");
-                translate(&sl, &tl, &selected_text, index, &proxy_str);
-                index += 1;
+            if last_selected_text != selected_text {
+                if selected_text.trim().len() > 0 {
+                    last_selected_text = selected_text.clone();
+                    // println!("{}", &selected_text);
+                    // let test_string = String::from("translate");
+                    translate(&sl, &tl, &selected_text, index, &proxy_str);
+                    index += 1;
+                }
             }
+            
         }
     } else if cfg!(target_os = "windows") {
         #[cfg(target_os = "windows")]
